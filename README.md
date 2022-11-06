@@ -163,7 +163,30 @@ cd
 git clone https://your.nodeapp.com
 ```
 
-2. remove hello application if its still running
+2. if you're application uses any on-server database set it up.i will give instructions to set up mongodb.you can refer my django-deployment if you need to set up postgres
+    * install mongodb
+      ```shell
+      wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+      sudo apt-get install gnupg
+      wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+      echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+      sudo apt-get update
+      sudo apt-get install -y mongodb-org
+      sudo systemctl daemon-reload
+      sudo systemctl enable mongod
+      sudo systemctl start mongod
+      ```
+    * if youre using ubuntu 22.04 or later you will most likely run into libssl dependency error i found a simple a way to resolve it 
+      ```shell
+      mkdir ~/temp && cd temp
+      wget https://ubuntu.pkgs.org/20.04/ubuntu-main-amd64/libssl1.1_1.1.1f-1ubuntu2_amd64.deb.html
+      dpkg *.deb  
+      rm *
+      ```
+      then retry the mongodb installation
+
+
+3. remove hello application if its still running
 
 ```
 pm2 list
@@ -179,4 +202,4 @@ sudo systemctl restart nginx
 
 ## References
 1. i created this repo so people doesnt have to go to refer many sites and get confused most of the code is borrowed from [digitalocean](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-22-04) even the hello.js program
-2 initial server setup is also [digital ocean](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-22-04) but i hope i made it easier
+2. initial server setup is also [digital ocean](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-22-04) but i hope i made it easier
